@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+import 'package:redux/redux.dart';
+import '../app_state.dart';
+
+import 'navigation_action.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+//* navigation redux middleware
+class NavigationMiddleware extends MiddlewareClass<AppState> {
+  @override
+  void call(Store<AppState> store, action, NextDispatcher next) async {
+    if (action is NavigationAction) {
+      switch (action) {
+        case NavigationAction.pushReplaceGoogleMapPage:
+          navigatorKey.currentState!.pushReplacementNamed("/splashScreen");
+          break;
+        case NavigationAction.popSearchPage:
+          navigatorKey.currentState!.popUntil(
+            ModalRoute.withName('/searchPage'),
+          );
+          break;
+        default:
+      }
+    }
+    next(action);
+  }
+}
