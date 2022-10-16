@@ -10,11 +10,12 @@ import 'package:locq/utilities/map_utilities.dart';
 import 'package:redux/redux.dart';
 
 Widget locationItem(int index, BuildContext context, Stations? stations,
-    StateSetter setState, GoogleMapController mapController) {
+    StateSetter setState) {
   Store<AppState> store = StoreProvider.of<AppState>(context);
   return StoreConnector<AppState, Map<String, dynamic>>(
     converter: (store) => {
       'currentLocation': store.state.googleMapState.currentLocation,
+      'mapController': store.state.googleMapState.mapController,
     },
     builder: (context, vm) {
       return ListTile(
@@ -36,7 +37,7 @@ Widget locationItem(int index, BuildContext context, Stations? stations,
           selectedStationLocation[latLng] = stations ?? Stations();
           Navigator.pop(context);
           store.dispatch(SetSelectedStationLocation(
-              selectedStationLocation,latLng, mapController, () => {
+              selectedStationLocation,latLng, vm['mapController'], () => {
                 showSelectedStationModal(context)
           }));
         },

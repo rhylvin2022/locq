@@ -16,13 +16,11 @@ import 'search_page.dart';
 class GoogleMapPage extends StatelessWidget {
   GoogleMapPage({Key? key}) : super(key: key);
 
-
-  late GoogleMapController mapController;
   late Store<AppState> store;
 
 
   void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
+    store.dispatch(SetGoogleMapController(controller));
   }
 
   @override
@@ -36,7 +34,6 @@ class GoogleMapPage extends StatelessWidget {
         'stationDataFetchingLoading': store.state.googleMapState.stationDataFetchingLoading,
       },
       builder: (context, vm) {
-        print('currentLocation: ${vm['currentLocation']}');
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -46,7 +43,7 @@ class GoogleMapPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SearchPage()),
+                      MaterialPageRoute(builder: (context) => const SearchPage()),
                     );
                   },
                   icon: const Icon(Icons.search))
@@ -90,10 +87,10 @@ class GoogleMapPage extends StatelessWidget {
   void fetchStationLocations(BuildContext context) {
     if (/*sortedStations.isNotEmpty*/ store
         .state.googleMapState.sortedStations.isNotEmpty) {
-      showStationListModal(context, mapController);
+      showStationListModal(context);
     } else {
       store.dispatch(SetStationDataFetchingLoading(true));
-      store.dispatch(GetStationDataAPI(() => {showStationListModal(context,mapController)}));
+      store.dispatch(GetStationDataAPI(() => {showStationListModal(context)}));
     }
   }
 }

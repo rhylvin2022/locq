@@ -55,3 +55,7 @@ class GetStationDataAPI{
   final VoidCallback callback;
   GetStationDataAPI(this.callback);
 }
+class SetGoogleMapController {
+  final GoogleMapController mapController;
+  SetGoogleMapController(this.mapController);
+}

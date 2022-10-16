@@ -9,6 +9,7 @@ class GoogleMapState {
   bool googleMapLoading;
   bool stationDataFetchingLoading;
   List<Stations> sortedStations;
+  GoogleMapController? mapController;
 
   GoogleMapState({
     required this.accessToken,
@@ -18,6 +19,7 @@ class GoogleMapState {
     required this.googleMapLoading,
     required this.stationDataFetchingLoading,
     required this.sortedStations,
+    required this.mapController,
   });
 
   factory GoogleMapState.initial() {
@@ -29,6 +31,7 @@ class GoogleMapState {
       googleMapLoading: false,
       stationDataFetchingLoading: false,
       sortedStations: [],
+      mapController: null,
     );
   }
 
@@ -40,6 +43,7 @@ class GoogleMapState {
     bool? googleMapLoading,
     bool? stationDataFetchingLoading,
     List<Stations>? sortedStations,
+    GoogleMapController? mapController,
 
   }) {
     return GoogleMapState(
@@ -50,6 +54,7 @@ class GoogleMapState {
       googleMapLoading: googleMapLoading ?? this.googleMapLoading,
       stationDataFetchingLoading: stationDataFetchingLoading ?? this.stationDataFetchingLoading,
       sortedStations: sortedStations ?? this.sortedStations,
+      mapController: mapController ?? this.mapController,
     );
   }
 }

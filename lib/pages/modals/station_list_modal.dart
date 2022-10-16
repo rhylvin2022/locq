@@ -6,13 +6,14 @@ import 'package:locq/redux/app_state.dart';
 import '../../components/location_item.dart';
 
 void showStationListModal(
-    BuildContext context, GoogleMapController mapController) {
+    BuildContext context) {
   showModalBottomSheet(
       context: context,
       builder: (context) {
         return StoreConnector<AppState, Map<String, dynamic>>(
             converter: (store) => {
                   'sortedStations': store.state.googleMapState.sortedStations,
+                  'mapController': store.state.googleMapState.mapController,
                 },
             builder: (context, vm) {
               return WillPopScope(onWillPop: () async {
@@ -60,8 +61,7 @@ void showStationListModal(
                                       index,
                                       context,
                                       vm['sortedStations'][index],
-                                      setState,
-                                      mapController);
+                                      setState);
                                 }),
                           )
                         ],
