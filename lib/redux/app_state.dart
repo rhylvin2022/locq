@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:locq/redux/navigation/navigation_state.dart';
+import '../redux/navigation/navigation_state.dart';
 import 'login/login_state.dart';
 import 'google_map/google_map_state.dart';
 
@@ -25,8 +25,8 @@ class AppState {
 
   AppState copyWith({
     NavigationState? navigation,
-    LoginState? homeState,
-    GoogleMapState? templateState,
+    LoginState? loginState,
+    GoogleMapState? googleMapState,
   }) =>
       AppState(
         navigation: navigation ?? this.navigation,

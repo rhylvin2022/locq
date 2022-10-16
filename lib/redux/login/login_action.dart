@@ -3,45 +3,21 @@ import 'package:redux/redux.dart';
 
 import '../app_state.dart';
 
-class AuthenticateWithNumberAndPassword {
+class LoginInAPI {
   final String number;
   final String password;
   final BuildContext context;
 
-  AuthenticateWithNumberAndPassword({
+  LoginInAPI({
     required this.number,
     required this.password,
     required this.context,
   });
 }
 
-class GetCredentialsFromPrefs {}
-
-class SetCredentialsFromPrefs {
-  final String number;
-  final String password;
-  SetCredentialsFromPrefs({
-    required this.number,
-    required this.password,
-  });
+class SetLoginLoading {
+  final bool loginLoading;
+  SetLoginLoading(this.loginLoading);
 }
 
-class SaveCredentialsToPrefs {
-  final String number;
-  final String password;
-  SaveCredentialsToPrefs({
-    required this.number,
-    required this.password,
-  });
-}
-
-class Logout {
-  final BuildContext context;
-  Logout(this.context);
-}
-
-class GetErrorMessageAction {
-  final String error;
-  final BuildContext context;
-  GetErrorMessageAction(this.error, this.context);
-}
+class GetCurrentLocation {}

@@ -12,8 +12,13 @@ class NavigationMiddleware extends MiddlewareClass<AppState> {
   void call(Store<AppState> store, action, NextDispatcher next) async {
     if (action is NavigationAction) {
       switch (action) {
+        case NavigationAction.popLoginPage:
+          navigatorKey.currentState!.popUntil(
+            ModalRoute.withName('/login'),
+          );
+          break;
         case NavigationAction.pushReplaceGoogleMapPage:
-          navigatorKey.currentState!.pushReplacementNamed("/splashScreen");
+          navigatorKey.currentState!.pushReplacementNamed("/googleMap");
           break;
         case NavigationAction.popSearchPage:
           navigatorKey.currentState!.popUntil(
