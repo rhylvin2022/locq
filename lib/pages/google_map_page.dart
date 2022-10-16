@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:locq/class/stationListResponse.dart';
 import 'package:locq/redux/google_map/google_map_action.dart';
+import 'package:locq/redux/navigation/navigation_action.dart';
 import 'package:locq/utilities/map_utilities.dart';
 import 'package:redux/redux.dart';
 
@@ -26,8 +27,10 @@ class GoogleMapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     store = StoreProvider.of<AppState>(context);
+    delayInit(context);
     return StoreConnector<AppState, Map<String, dynamic>>(
       converter: (store) => {
+        'sortedStations': store.state.googleMapState.sortedStations,
         'googleMapLoading': store.state.googleMapState.googleMapLoading,
         'currentLocation': store.state.googleMapState.currentLocation,
         'markers': store.state.googleMapState.markers,
@@ -41,10 +44,8 @@ class GoogleMapPage extends StatelessWidget {
             actions: [
               IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SearchPage()),
-                    );
+                    store.dispatch(SetSearchStationLocation(vm['sortedStations']));
+                    store.dispatch(NavigationAction.pushSearchPage);
                   },
                   icon: const Icon(Icons.search))
             ],
@@ -93,4 +94,11 @@ class GoogleMapPage extends StatelessWidget {
       store.dispatch(GetStationDataAPI(() => {showStationListModal(context)}));
     }
   }
+
+  void delayInit(BuildContext context) {
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      fetchStationLocations(context);
+    });
+  }
+
 }

@@ -20,10 +20,8 @@ class NavigationMiddleware extends MiddlewareClass<AppState> {
         case NavigationAction.pushReplaceGoogleMapPage:
           navigatorKey.currentState!.pushReplacementNamed("/googleMap");
           break;
-        case NavigationAction.popSearchPage:
-          navigatorKey.currentState!.popUntil(
-            ModalRoute.withName('/searchPage'),
-          );
+        case NavigationAction.pushSearchPage:
+          navigatorKey.currentState!.pushNamed("/search");
           break;
         default:
       }

@@ -8,22 +8,27 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:locq/components/location_item.dart';
 import 'package:locq/redux/app_state.dart';
+import 'package:locq/redux/google_map/google_map_action.dart';
 import '../class/stationListResponse.dart';
+import 'package:redux/redux.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
+    Store store = StoreProvider.of<AppState>(context);
     return StoreConnector<AppState, Map<String, dynamic>>(
       converter: (store) => {
-        'sortedStations': store.state.googleMapState.sortedStations,
+        'searchedStations': store.state.googleMapState.searchedStations,
         'mapController': store.state.googleMapState.mapController,
         // 'currentLocation': store.state.googleMapState.currentLocation,
         // 'markers': store.state.googleMapState.markers,
         // 'stationDataFetchingLoading': store.state.googleMapState.stationDataFetchingLoading,
       },
       builder: (context, vm) {
+        String search = '';
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return Scaffold(
@@ -56,11 +61,12 @@ class SearchPage extends StatelessWidget {
                               child: TextField(
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(),
-                                  // icon: Icon(Icons.search),
                                   labelText: 'Search',
                                   hintText: 'Enter Location',
                                 ),
                                 onChanged: (text) {
+                                  search = text;
+                                  store.dispatch(SearchFromList(search));
                                 },
                               ),
                             ),
@@ -70,18 +76,15 @@ class SearchPage extends StatelessWidget {
                       preferredSize: const Size.fromHeight(20)),
                 ),
               ),
-              body: Expanded(
-                child: ListView.builder(
-                  // itemCount: sortedStations.length,
-                    itemCount: vm['sortedStations'].length,
-                    itemBuilder: (context, index) {
-                      return locationItem(
-                          index,
-                          context,
-                          vm['sortedStations'][index],
-                          setState);
-                    }),
-              ),
+              body: ListView.builder(
+                  itemCount: vm['searchedStations'].length,
+                  itemBuilder: (context, index) {
+                    return locationItem(
+                        index,
+                        context,
+                        vm['searchedStations'][index],
+                        setState);
+                  }),
             );
           },
         );

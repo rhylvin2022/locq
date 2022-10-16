@@ -31,6 +31,7 @@ class GoogleMapMiddleware extends MiddlewareClass<AppState> {
       store.dispatch(SetMarkers(markers));
     }
     if (action is GetStationDataAPI) {
+      print('store.state.googleMapState.accessToken: ${store.state.googleMapState.accessToken}');
       getStationListAPI(store.state.googleMapState.accessToken).then((value) {
         Map<double, Stations> stations = {};
         List<Stations> sortedStations = [];
@@ -40,7 +41,6 @@ class GoogleMapMiddleware extends MiddlewareClass<AppState> {
             .data
             ?.stations
             ?.forEach((element) async {
-              print('store.state.googleMapState.currentLocation.latitude: ${store.state.googleMapState.currentLocation.latitude}');
           stations[distanceInMeters(
               store.state.googleMapState.currentLocation.latitude,
               store.state.googleMapState.currentLocation.longitude,
@@ -50,10 +50,6 @@ class GoogleMapMiddleware extends MiddlewareClass<AppState> {
         stations.keys.toList()
           ..sort()
           ..forEach((element) {
-            print('key: $element');
-            print(stations[element]?.name.toString());
-            print(stations[element]?.longitude);
-            print(stations[element]?.latitude);
             sortedStations.add(stations[element] ?? Stations());
             store.dispatch(SetSortedStations(sortedStations));
           });
@@ -80,6 +76,21 @@ class GoogleMapMiddleware extends MiddlewareClass<AppState> {
           action.stationLocation, action.mapController);
 
       action.callback();
+    }
+
+    if (action is SearchFromList) {
+      List<Stations> sortedStations = [];
+      List<Stations> unsortedStation = [];
+      for (var element in store.state.googleMapState.sortedStations) {
+        if(element.name?.toLowerCase().contains(action.search.toLowerCase()) ?? false) {
+          sortedStations.add(element);
+        }
+        else {
+          unsortedStation.add(element);
+        }
+      }
+      List<Stations> finalSortedStation = [...sortedStations, ...unsortedStation];
+      store.dispatch(SetSearchStationLocation(finalSortedStation));
     }
     next(action);
   }

@@ -9,6 +9,7 @@ class GoogleMapState {
   bool googleMapLoading;
   bool stationDataFetchingLoading;
   List<Stations> sortedStations;
+  List<Stations> searchedStations;
   GoogleMapController? mapController;
 
   GoogleMapState({
@@ -19,6 +20,7 @@ class GoogleMapState {
     required this.googleMapLoading,
     required this.stationDataFetchingLoading,
     required this.sortedStations,
+    required this.searchedStations,
     required this.mapController,
   });
 
@@ -31,6 +33,7 @@ class GoogleMapState {
       googleMapLoading: false,
       stationDataFetchingLoading: false,
       sortedStations: [],
+      searchedStations: [],
       mapController: null,
     );
   }
@@ -43,6 +46,7 @@ class GoogleMapState {
     bool? googleMapLoading,
     bool? stationDataFetchingLoading,
     List<Stations>? sortedStations,
+    List<Stations>? searchedStations,
     GoogleMapController? mapController,
 
   }) {
@@ -54,6 +58,7 @@ class GoogleMapState {
       googleMapLoading: googleMapLoading ?? this.googleMapLoading,
       stationDataFetchingLoading: stationDataFetchingLoading ?? this.stationDataFetchingLoading,
       sortedStations: sortedStations ?? this.sortedStations,
+      searchedStations: searchedStations ?? this.searchedStations,
       mapController: mapController ?? this.mapController,
     );
   }

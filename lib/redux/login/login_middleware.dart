@@ -22,17 +22,13 @@ class LoginMiddleware extends MiddlewareClass<AppState> {
           // display error message
           // store.dispatch(ShowToastMessage("Some fields are missing"));
         } else {
-          // login(action.number, action.password, store, action.context)
-          login('+639021234567', '123456', store, action.context)
+          login(action.number, action.password, store, action.context)
+          // login('+639021234567', '123456', store, action.context)
               .then((value) {
             Map<String, dynamic> map = jsonDecode(value.body);
             var myRootNode = SuccessfulLoginResponse.fromJson(map);
-            print('myRootNode.data?.accessToken: ${myRootNode.data?.accessToken}');
-            // Navigator.pushAndRemoveUntil(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => GoogleMapPage(accessToken: myRootNode.data?.accessToken ?? "")),
-            //       (Route<dynamic> route) => false,
-            // );
+            print('myRootNode.data?.accessToken: ');
+            store.dispatch(SetAccessToken(myRootNode.data?.accessToken ?? ''));
             store.dispatch(GetCurrentLocation());
           });
         }
@@ -51,9 +47,8 @@ class LoginMiddleware extends MiddlewareClass<AppState> {
       double cebuLat = 10.253058;
       double cebuLng = 123.803408;
 
-      // _currentPosition = LatLng(lat, long);
       store.dispatch(SetCurrentLocation(LatLng(cebuLat, cebuLng)));
-      // _currentPosition = LatLng(cebuLat, cebuLng);
+      // store.dispatch(SetCurrentLocation(LatLng(lat, long)));
       store.dispatch(SetGoogleMapLoading(false));
       // _isLoading = false;
 

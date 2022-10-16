@@ -19,8 +19,12 @@ final googleMapReducer = combineReducers<GoogleMapState>([
       _setSelectedStationLocation),
   TypedReducer<GoogleMapState, SetCurrentLocation>(
       _setCurrentLocation),
+  TypedReducer<GoogleMapState, SetSearchStationLocation>(
+      _setSearchStationLocation),
   TypedReducer<GoogleMapState, SetGoogleMapController>(
       _setGoogleMapController),
+  TypedReducer<GoogleMapState, SetAccessToken>(
+      _setAccessToken),
 ]);
 
 GoogleMapState _getStationListAPIReducers(
@@ -52,6 +56,12 @@ GoogleMapState _setCurrentLocation(GoogleMapState state, SetCurrentLocation acti
 GoogleMapState _setSelectedStationLocation(GoogleMapState state, SetSelectedStationLocation action) {
   return state.copyWith(selectedStationLocation: action.selectedStationLocation);
 }
+GoogleMapState _setSearchStationLocation(GoogleMapState state, SetSearchStationLocation action) {
+  return state.copyWith(searchedStations: action.searchedStations);
+}
 GoogleMapState _setGoogleMapController(GoogleMapState state, SetGoogleMapController action) {
   return state.copyWith(mapController: action.mapController);
+}
+GoogleMapState _setAccessToken(GoogleMapState state, SetAccessToken action) {
+  return state.copyWith(accessToken: action.accessToken);
 }

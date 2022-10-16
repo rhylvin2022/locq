@@ -3,7 +3,7 @@ import 'navigation_state.dart';
 enum NavigationAction {
   popLoginPage,
   pushReplaceGoogleMapPage,
-  popSearchPage,
+  pushSearchPage,
 }
 
 class UpdatePageAction {

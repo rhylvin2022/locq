@@ -59,3 +59,18 @@ class SetGoogleMapController {
   final GoogleMapController mapController;
   SetGoogleMapController(this.mapController);
 }
+
+class SearchFromList {
+  final String search;
+  SearchFromList(this.search);
+}
+
+class SetSearchStationLocation{
+  final List<Stations> searchedStations;
+  SetSearchStationLocation(this.searchedStations);
+}
+
+class SetAccessToken{
+  final String accessToken;
+  SetAccessToken(this.accessToken);
+}
