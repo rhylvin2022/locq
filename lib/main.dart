@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         );
       case '/googleMap':
         return PageTransition(
-          child: const GoogleMapPage(),
+          child: GoogleMapPage(),
           type: PageTransitionType.fade,
         );
       case '/search':

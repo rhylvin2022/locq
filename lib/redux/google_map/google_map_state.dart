@@ -5,7 +5,7 @@ class GoogleMapState {
   String accessToken;
   Map<MarkerId, Marker> markers;
   LatLng currentLocation;
-  LatLng selectedStationsLocation;
+  Map<LatLng, Stations> selectedStationLocation;
   bool googleMapLoading;
   bool stationDataFetchingLoading;
   List<Stations> sortedStations;
@@ -14,7 +14,7 @@ class GoogleMapState {
     required this.accessToken,
     required this.markers,
     required this.currentLocation,
-    required this.selectedStationsLocation,
+    required this.selectedStationLocation,
     required this.googleMapLoading,
     required this.stationDataFetchingLoading,
     required this.sortedStations,
@@ -25,7 +25,7 @@ class GoogleMapState {
       accessToken: "",
       markers: {},
       currentLocation: const LatLng(0,0),
-      selectedStationsLocation: const LatLng(0,0),
+      selectedStationLocation: {},
       googleMapLoading: false,
       stationDataFetchingLoading: false,
       sortedStations: [],
@@ -36,7 +36,7 @@ class GoogleMapState {
     String? accessToken,
     Map<MarkerId, Marker>? markers,
     LatLng? currentLocation,
-    LatLng? selectedStationsLocation,
+    Map<LatLng, Stations>? selectedStationLocation,
     bool? googleMapLoading,
     bool? stationDataFetchingLoading,
     List<Stations>? sortedStations,
@@ -46,7 +46,7 @@ class GoogleMapState {
       accessToken: accessToken ?? this.accessToken,
       markers: markers ?? this.markers,
       currentLocation: currentLocation ?? this.currentLocation,
-      selectedStationsLocation: selectedStationsLocation ?? this.selectedStationsLocation,
+      selectedStationLocation: selectedStationLocation ?? this.selectedStationLocation,
       googleMapLoading: googleMapLoading ?? this.googleMapLoading,
       stationDataFetchingLoading: stationDataFetchingLoading ?? this.stationDataFetchingLoading,
       sortedStations: sortedStations ?? this.sortedStations,

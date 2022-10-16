@@ -6,6 +6,8 @@ import 'package:redux/redux.dart';
 
 import '../app_state.dart';
 
+typedef VoidCallback = void Function();
+
 class GetStationListAPI {
   final String accessToken;
   final BuildContext context;
@@ -41,13 +43,14 @@ class SetSortedStations {
   SetSortedStations(this.sortedStations);
 }
 
-class SetSelectedStationsLocation {
-  final LatLng selectedStationLocation;
+class SetSelectedStationLocation {
+  final Map<LatLng, Stations> selectedStationLocation;
+  final LatLng stationLocation;
   final GoogleMapController mapController;
-  SetSelectedStationsLocation(this.selectedStationLocation, this.mapController);
+  final VoidCallback callback;
+  SetSelectedStationLocation(this.selectedStationLocation, this.stationLocation, this.mapController, this.callback);
 }
 
-typedef VoidCallback = void Function();
 class GetStationDataAPI{
   final VoidCallback callback;
   GetStationDataAPI(this.callback);

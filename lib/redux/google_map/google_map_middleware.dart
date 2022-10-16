@@ -62,14 +62,14 @@ class GoogleMapMiddleware extends MiddlewareClass<AppState> {
         action.callback();
       });
     }
-    if (action is SetSelectedStationsLocation) {
+    if (action is SetSelectedStationLocation) {
       var marker = Marker(
         markerId: const MarkerId('station'),
-        position: action.selectedStationLocation,
+        position: action.stationLocation,
         icon:
         BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-        infoWindow: const InfoWindow(
-          title: 'Station',
+        infoWindow: InfoWindow(
+          title: action.selectedStationLocation[action.stationLocation]?.name,
         ),
       );
       var markers = store.state.googleMapState.markers;
@@ -77,7 +77,9 @@ class GoogleMapMiddleware extends MiddlewareClass<AppState> {
 
       store.dispatch(SetMarkers(markers));
       updateCameraLocation(store.state.googleMapState.currentLocation,
-          action.selectedStationLocation, action.mapController);
+          action.stationLocation, action.mapController);
+
+      action.callback();
     }
     next(action);
   }

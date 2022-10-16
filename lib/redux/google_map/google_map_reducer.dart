@@ -15,8 +15,8 @@ final googleMapReducer = combineReducers<GoogleMapState>([
       _setStationDataFetchingLoading),
   TypedReducer<GoogleMapState, SetSortedStations>(
       _setSortedStations),
-  TypedReducer<GoogleMapState, SetSelectedStationsLocation>(
-      _setSelectedStationsLocation),
+  TypedReducer<GoogleMapState, SetSelectedStationLocation>(
+      _setSelectedStationLocation),
   TypedReducer<GoogleMapState, SetCurrentLocation>(
       _setCurrentLocation),
 ]);
@@ -46,6 +46,6 @@ GoogleMapState _setSortedStations(GoogleMapState state, SetSortedStations action
 GoogleMapState _setCurrentLocation(GoogleMapState state, SetCurrentLocation action) {
   return state.copyWith(currentLocation: action.currentLocation);
 }
-GoogleMapState _setSelectedStationsLocation(GoogleMapState state, SetSelectedStationsLocation action) {
-  return state.copyWith(selectedStationsLocation: action.selectedStationLocation);
+GoogleMapState _setSelectedStationLocation(GoogleMapState state, SetSelectedStationLocation action) {
+  return state.copyWith(selectedStationLocation: action.selectedStationLocation);
 }

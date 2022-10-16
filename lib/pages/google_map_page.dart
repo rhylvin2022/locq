@@ -10,25 +10,16 @@ import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:locq/redux/app_state.dart';
+import 'modals/station_list_modal.dart';
 import 'search_page.dart';
 
-class GoogleMapPage extends StatefulWidget {
-  const GoogleMapPage({Key? key}) : super(key: key);
+class GoogleMapPage extends StatelessWidget {
+  GoogleMapPage({Key? key}) : super(key: key);
 
-  @override
-  State<GoogleMapPage> createState() => _GoogleMapPageState();
-}
-
-class _GoogleMapPageState extends State<GoogleMapPage> {
 
   late GoogleMapController mapController;
   late Store<AppState> store;
 
-  @override
-  void initState() {
-    super.initState();
-    // fetchStationLocations();
-  }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -85,7 +76,9 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: fetchStationLocations,
+            onPressed: () {
+              fetchStationLocations(context);
+            },
             tooltip: 'Fetch Location',
             child: const Icon(Icons.my_location),
           ), // This trailing
@@ -94,115 +87,13 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     );
   }
 
-  void fetchStationLocations() {
+  void fetchStationLocations(BuildContext context) {
     if (/*sortedStations.isNotEmpty*/ store
         .state.googleMapState.sortedStations.isNotEmpty) {
-      showStationList();
+      showStationListModal(context, mapController);
     } else {
       store.dispatch(SetStationDataFetchingLoading(true));
-      store.dispatch(GetStationDataAPI(showStationList));
+      store.dispatch(GetStationDataAPI(() => {showStationListModal(context,mapController)}));
     }
-  }
-
-  void showStationList() {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return StoreConnector<AppState, Map<String, dynamic>>(
-              converter: (store) => {
-                    'sortedStations': store.state.googleMapState.sortedStations,
-                  },
-              builder: (context, vm) {
-                return WillPopScope(onWillPop: () async {
-                  return true;
-                }, child: StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
-                    return FractionallySizedBox(
-                      heightFactor: 0.55,
-                      child: Container(
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 50,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: const [
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      'Nearby Stations',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Text('Done',
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15)),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: ListView.builder(
-                                  // itemCount: sortedStations.length,
-                                  itemCount: vm['sortedStations'].length,
-                                  itemBuilder: (context, index) {
-                                    return locationItem(index,
-                                        vm['sortedStations'][index], setState);
-                                  }),
-                            )
-                          ],
-                        ),
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                            )),
-                      ),
-                    );
-                  },
-                ));
-              });
-        },
-        shape: const CircleBorder());
-  }
-
-  Widget locationItem(int index, Stations? stations, StateSetter setState) {
-    return StoreConnector<AppState, Map<String, dynamic>>(
-      converter: (store) => {
-        'currentLocation': store.state.googleMapState.currentLocation,
-      },
-      builder: (context, vm) {
-        return ListTile(
-          title: Text(
-            stations?.name ?? "",
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(
-            "${metersToKm(distanceInMeters(vm['currentLocation'].latitude ?? 0, vm['currentLocation'].longitude ?? 0, stations?.latitude ?? 0, stations?.longitude ?? 0)).toStringAsFixed(2)} Km away from you",
-            style: const TextStyle(fontSize: 10),
-          ),
-          trailing: const Icon(
-            Icons.check_circle_outline,
-            color: Colors.grey,
-          ),
-          onTap: () {
-            store.dispatch(SetSelectedStationsLocation(
-                LatLng(stations?.latitude ?? 0, stations?.longitude ?? 0),
-                mapController));
-            Navigator.pop(context);
-          },
-        );
-      },
-    );
   }
 }

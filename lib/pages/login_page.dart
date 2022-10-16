@@ -16,8 +16,6 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String number = '';
     String password = '';
-    // bool loginLoading = false;
-
     Store store = StoreProvider.of<AppState>(context);
     return Scaffold(
       appBar: AppBar(
